@@ -36,23 +36,25 @@
             This demo introduces ITON, which is an end-to-end speech synthesis based on 
 		    solving It\^o stochastic differential equations (SDE). 
                 </p><p class="lead" align="justify">
-                  Speech synthesis plays an important role in human-computer interaction.
-  Existing methods mainly employ traditional two-stage pipeline, e.g. 
-  text-to-speech and vocoder. 
-  In this paper, we propose a system called Schron, which can generate 
-  speech waves in an end-to-end mamaner by solving Schrodinger bridge problems (SBP). 
-  In order to make SBP suitable for speech synthesis, we generalize SBP from two aspects. 
-  The first generalization makes it possible to accept condition variables, 
-  which are used to control the generated speech, 
-  and the second generalization allows it to handle variable-size input.
-  Besides these two generalizations, we propose two techniques to fill the large information gap 
-  between text and speech waveforms for generating high-quality 
-  voice. The first technique is 
-  to use a text-mel joint representation as the conditional input of the conditional SBP. 
-  The second one is to use a branch network for the generation of mel scores as a 
-  regularization, so that the text features will not be degenerated.
-  Experimental results show that Schron achieves 
-  state-of-the-art MOS of 4.52 on public data set LJSpeech.
+                  This paper proposes an end-to-end speech audio generation model called ITON based on 
+  Ito stochastic 
+  differential equations (SDE). At the time 
+  of inference, ITON takes raw text as input and corresponding voice as output, 
+  and there is no 
+  process of generating mel-spectrogram in the middle. 
+  ITON uses an encoder-decoder-dual denoisers structure. 
+  The function of the encoder is to learn the representations 
+  of the text, pitch, and energy information to obtain the embedding of 
+  the prosodic text. 
+  The decoder is used to find the mapping between the  text and mel-spectrogram hidden representations.
+  The main denoiser of the dual is used to predict the gradient of a
+  certain wave's log 
+  probability (a.k.a score) on the wave data manifold.
+  The auxiliary denoiser is used to fill the information gap between text and wave, and 
+  it is used to calculate the gradient of the log probability of  mel-spectrogram. 
+  The diffusion processes in the two denoisers are based on Ito SDEs. 
+  Experimental results show that ITON achieves 
+  state-of-the-art MOS of 4.51 on public data set LJSpeech.
 		  </p><p class="lead" align="justify">
 
 
@@ -64,55 +66,11 @@
             <div class="container">
               <div class="row">
                 <div class="col-md-8">
-                    <h3>Frameworks, pipelines, modules, and algorithms in Schron</h3>				
-					</p><p class="lead" align="justify">
-			  The overall structure of Schron. 
+                    <h3>The overall structure of ITON.</h3>				
+					</p><p class="lead" align="justify"> 
               </p><p class="lead" align="justify">
-                    <img src="src/schron_framework.jpg" alt="Italian Trulli" width="750px">
+                    <img src="src/iton_framework.jpg" alt="Italian Trulli" width="750px">
                     <br>  </br> 
-					</p><p class="lead" align="justify">
-			   The inference pipeline of Schron.
-              </p><p class="lead" align="justify">
-			  <img src="src/schron_inference.jpg" alt="Italian Trulli" width="750px">
-	      </p><p class="lead" align="justify">
-			   Example of two-stage wave generation in Schron.
-              </p><p class="lead" align="justify">
-			  <img src="src/diagram_of_two-stage_waveform_generation.jpg" alt="Italian Trulli" width="750px">
-	      </p><p class="lead" align="justify">
-			   Two stages of wave generation in Schron.
-    (a)The generation steps of the noisy wave from Dirac's delta distribution in the first stage. 
-    (b)The generation steps of the clean wave from the noisy wave in the second stage.
-              </p><p class="lead" align="justify">
-			 <img src="src/stage1_diffusion_wave.png" alt="Italian Trulli" width="400px">
-	                <img src="src/stage2_diffusion_wave.png" alt="Italian Trulli" width="400px">
-	      </p><p class="lead" align="justify">
-			   Two stages of mel-spectrogram generation in Schron. (a) The 
-      generation steps of noisy mel-spectrogram from Dirac distribution in the first stage. 
-      (b) The generation steps of clean mel-spectrogram from noisy mel-spectrogram in the second stage.
-              </p><p class="lead" align="justify">
-			   <img src="src/stage1_mel_diffusion.jpg" alt="Italian Trulli" width="400px">
-	                <img src="src/stage2_mel_diffusion.jpg" alt="Italian Trulli" width="400px">
-	       </p><p class="lead" align="justify">
-			      The mel density ratio prediction network in Schron.  
-              </p><p class="lead" align="justify">
-			  <img src="src/density_ratio_network_schrotts.jpg" alt="Italian Trulli" width="750px">
-	       </p><p class="lead" align="justify">
-			 The mel score prediction network in Schron. 
-              </p><p class="lead" align="justify">
-			  <img src="src/the_general_score_network_schrotts.jpg" alt="Italian Trulli" width="750px">
-	      </p><p class="lead" align="justify">
-			 The wave density ratio prediction network in Schron.
-              </p><p class="lead" align="justify">
-			  <img src="src/density_ratio_network_schrowave.jpg" alt="Italian Trulli" width="750px">
-	      </p><p class="lead" align="justify">
-			  The wave score prediction network in Schron.
-              </p><p class="lead" align="justify">
-			  <img src="src/the_general_score_network_schrowave.jpg" alt="Italian Trulli" width="750px">
-	      </p><p class="lead" align="justify">
-			   Modules in score prediction network. (a) Time step embedding; (b) the residual block; 
-                (c) up-sampling of text representations. 
-              </p><p class="lead" align="justify">
-			  <img src="src/time_residual_spec.jpg" alt="Italian Trulli" width="750px">
                 </div>
               </div>
               <br>  </br>
